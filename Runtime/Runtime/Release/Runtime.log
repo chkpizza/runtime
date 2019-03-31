@@ -1,8 +1,54 @@
 ﻿  dr_debugger.c
+LINK : warning LNK4098: 'LIBCMT' defaultlib가 다른 라이브러리와 충돌합니다. /NODEFAULTLIB:library를 사용하십시오.
   코드를 생성하고 있습니다.
-  1 of 6 functions (16.7%) were compiled, the rest were copied from previous compilation.
+  1 of 1465 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    2 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
+capstone_static.lib(cs.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(cs.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(MCInst.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(MCInst.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(XCoreModule.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(XCoreModule.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(PPCModule.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(PPCModule.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(utils.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(utils.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(SystemZModule.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(SystemZModule.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(M68KModule.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(M68KModule.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(X86Module.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(X86Module.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(AArch64Module.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(AArch64Module.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(SparcModule.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(SparcModule.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(MipsModule.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(MipsModule.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(ARMModule.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(ARMModule.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(SStream.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(SStream.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(XCoreMapping.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(XCoreMapping.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(XCoreInstPrinter.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(XCoreInstPrinter.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(XCoreDisassembler.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(XCoreDisassembler.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(PPCMapping.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(PPCMapping.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(PPCDisassembler.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(PPCDisassembler.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(PPCInstPrinter.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(PPCInstPrinter.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(SystemZMapping.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(SystemZMapping.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(SystemZInstPrinter.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(SystemZInstPrinter.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(SystemZDisassembler.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(SystemZDisassembler.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(M68KInstPrinter.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(M68KInstPrinter.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(M68KDisassembler.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(M68KDisassembler.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(X86Disassembler.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(X86Disassembler.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(X86Mapping.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(X86Mapping.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(X86IntelInstPrinter.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(X86IntelInstPrinter.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(X86ATTInstPrinter.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(X86ATTInstPrinter.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(AArch64InstPrinter.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(AArch64InstPrinter.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(AArch64Mapping.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(AArch64Mapping.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(AArch64Disassembler.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(AArch64Disassembler.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(SparcInstPrinter.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(SparcInstPrinter.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(SparcMapping.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(SparcMapping.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(SparcDisassembler.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(SparcDisassembler.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(MipsDisassembler.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(MipsDisassembler.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(MipsMapping.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(MipsMapping.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(MipsInstPrinter.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(MipsInstPrinter.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(ARMInstPrinter.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(ARMInstPrinter.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(ARMMapping.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(ARMMapping.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(ARMDisassembler.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(ARMDisassembler.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(MCRegisterInfo.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(MCRegisterInfo.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(SystemZMCTargetDesc.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(SystemZMCTargetDesc.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(X86DisassemblerDecoder.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(X86DisassemblerDecoder.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(AArch64BaseInfo.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(AArch64BaseInfo.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+capstone_static.lib(MCInstrDesc.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(MCInstrDesc.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
   Runtime.vcxproj -> D:\runtime\Runtime\Release\Runtime.exe
   Runtime.vcxproj -> D:\runtime\Runtime\Release\Runtime.pdb (Full PDB)

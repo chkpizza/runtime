@@ -9,6 +9,7 @@ LONG WINAPI FirstHandler(
 	struct _EXCEPTION_POINTERS* ExceptionInfo
 );
 
+
 LONG WINAPI SecondHandler(
 	struct _EXCEPTION_POINTERS* ExceptionInfo
 );

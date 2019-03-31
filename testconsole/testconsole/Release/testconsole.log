@@ -1,9 +1,9 @@
 ﻿  main.c
-main.c(22): warning C4477: 'printf' : 서식 문자열 '%08X'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'void (__cdecl *)()'입니다.
+main.c(23): warning C4477: 'printf' : 서식 문자열 '%08X'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'void (__cdecl *)()'입니다.
   코드를 생성하고 있습니다.
-  5 of 6 functions (83.3%) were compiled, the rest were copied from previous compilation.
+  코드를 생성했습니다.
+  0 of 6 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
-  코드를 생성했습니다.
   testconsole.vcxproj -> D:\runtime\testconsole\Release\testconsole.exe
   testconsole.vcxproj -> D:\runtime\testconsole\Release\testconsole.pdb (Full PDB)

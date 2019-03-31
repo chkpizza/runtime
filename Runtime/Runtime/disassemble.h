@@ -1,13 +1,17 @@
 #pragma once
-#include <capstone\include\capstone.h>
+
 #include <uc\unicorn\unicorn.h>
+#include <capstone\include\capstone.h>
 #include <Windows.h>
 #include <stdint.h>
+#include "dr_debugger.h"
 
 #pragma comment(lib, "unicorn_static.lib")
 #pragma comment(lib, "capstone_static.lib")
 
 BOOL read_target_process_memory();
-BOOL disasm(PVOID address, uint32_t size, uint32_t* convert_size);
+BOOL get_target_process_info(uint32_t* image_base, uint32_t* image_size);
+BOOL disasm(unsigned char* memory, uint32_t memory_addr, uint32_t size);
 
-#define CODE "\x55\x48\x8b\x05\xb8\x13\x00\x00"
+uint32_t image_base;
+uint32_t image_size;

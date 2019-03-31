@@ -4,10 +4,8 @@
 #include <stdint.h>
 
 void start();
-//BOOL InterceptHandlerWin10();
 BOOL insert_veh_win10();
 BOOL insert_veh_win7();
-//BOOL InterceptHandlerWin7();
 LONG WINAPI first_veh(
 	struct _EXCEPTION_POINTERS* ExceptionInfo
 );
@@ -51,6 +49,7 @@ LONG WINAPI first_veh(
 		ExceptionInfo->ContextRecord->Ebp, ExceptionInfo->ContextRecord->Esp,
 		ExceptionInfo->ContextRecord->Edi, ExceptionInfo->ContextRecord->Esi,
 		ExceptionInfo->ContextRecord->Ecx, ExceptionInfo->ContextRecord->Edx);
+
 	//Shared Memory Lock 해제 대기 함수 넣을 위치
 	ExceptionInfo->ContextRecord->EFlags |= 0x100;
 	ExceptionInfo->ContextRecord->Dr0 = 0;
@@ -102,12 +101,9 @@ BOOL insert_veh_win10()
 	encode_pointer = GetProcAddress(ntdll, "RtlEncodePointer");
 	srw_lock = GetProcAddress(ntdll, "RtlAcquireSRWLockExclusive");
 
-
 	memcpy(inner_add_veh, (byte*)add_veh + 14, 20);
 
-
 	calc_call = (DWORD32)add_veh + 0x0D + (DWORD32)inner_add_veh[0] + 5;
-	//printf("%08X\n", calc_call);
 
 	memcpy(handler_list, (byte*)calc_call + 0x77, 4);
 
@@ -128,7 +124,6 @@ BOOL insert_veh_win10()
 
 	memset(inner_add_veh, 0, sizeof(inner_add_veh));
 	memcpy(inner_add_veh, (byte*)calc_call + 0x7f, 4);
-
 
 	tmp_convert_var = 0;
 	tmp_convert_var = (DWORD)inner_add_veh[3];

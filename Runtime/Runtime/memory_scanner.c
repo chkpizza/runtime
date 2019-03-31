@@ -52,7 +52,6 @@ DWORD* FindPattern(DWORD dwAddress, DWORD dwEndAddress, DWORD dwLen, BYTE* bMask
 			continue;
 		}
 
-
 		if (dwLen < mbi.RegionSize)
 		{
 			for (loop = 0; loop < dwLen; loop++) {
