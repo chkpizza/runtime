@@ -53,7 +53,8 @@ BOOL get_target_process_info(uint32_t* image_base, uint32_t* image_size)
 
 		return TRUE;
 	}
-	
+
+	CloseHandle(snapshot_handle);
 	return FALSE;
 }
 
@@ -158,7 +159,7 @@ void set_thread_context()
 			dr6_backup = thread_context.Dr6;
 			dr7_backup = thread_context.Dr7;
 			thread_context.ContextFlags = CONTEXT_DEBUG_REGISTERS;
-			thread_context.Dr0 = (DWORD)0x002210E0;
+			thread_context.Dr0 = (DWORD)0x013C10E0;
 
 			thread_context.Dr7 = (1 << 0) | (1 << 2) | (1 << 4) | (1 << 6);
 			

@@ -35,7 +35,7 @@ BOOL read_target_process_memory()
 		free(target_memory_hex);
 	}
 
-	return FALSE;
+	return TRUE;
 }
 
 
