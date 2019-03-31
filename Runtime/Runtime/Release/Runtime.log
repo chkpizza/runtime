@@ -1,9 +1,9 @@
 ﻿  dr_debugger.c
 LINK : warning LNK4098: 'LIBCMT' defaultlib가 다른 라이브러리와 충돌합니다. /NODEFAULTLIB:library를 사용하십시오.
   코드를 생성하고 있습니다.
-  1 of 1465 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  0 of 1465 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
 capstone_static.lib(cs.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(cs.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
 capstone_static.lib(MCInst.obj) : warning LNK4099: 'capstone_static.pdb' PDB를 'capstone_static.lib(MCInst.obj)' 또는 'D:\runtime\Runtime\Release\capstone_static.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
