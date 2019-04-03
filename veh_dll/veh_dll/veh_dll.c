@@ -10,6 +10,8 @@ LONG WINAPI first_veh(
 	struct _EXCEPTION_POINTERS* ExceptionInfo
 );
 
+char tmp_buffer[512];
+
 int step_count = 0;
 
 BOOL __stdcall DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
@@ -29,7 +31,7 @@ BOOL __stdcall DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
 void start()
 {
 	int i = 0;
-	MessageBoxA(NULL, "inject success", "success", MB_OK);
+	MessageBoxA(NULL, "inject success", " ", MB_OK);
 	insert_veh_win7();
 	while (1)
 	{
@@ -42,25 +44,33 @@ LONG WINAPI first_veh(
 	struct _EXCEPTION_POINTERS* ExceptionInfo
 )
 {
-	step_count++;
-	printf("[%d]. intercept exception addr : %08X, EIP : %08X\n",step_count ,ExceptionInfo->ExceptionRecord->ExceptionAddress,
-		ExceptionInfo->ContextRecord->Eip);
-	printf("EBP : %08X, ESP : %08X\nEDI : %08X, ESI : %08X\nECX : %08X, EDX : %08X\n",
-		ExceptionInfo->ContextRecord->Ebp, ExceptionInfo->ContextRecord->Esp,
-		ExceptionInfo->ContextRecord->Edi, ExceptionInfo->ContextRecord->Esi,
-		ExceptionInfo->ContextRecord->Ecx, ExceptionInfo->ContextRecord->Edx);
-
-	//Shared Memory Lock 해제 대기 함수 넣을 위치
-	ExceptionInfo->ContextRecord->EFlags |= 0x100;
-	ExceptionInfo->ContextRecord->Dr0 = 0;
-	ExceptionInfo->ContextRecord->Dr6 = 0;
-	ExceptionInfo->ContextRecord->Dr7 = 0;
-	if (step_count == 0x10)
+	if (ExceptionInfo->ExceptionRecord->ExceptionCode == STATUS_SINGLE_STEP)
 	{
-		ExceptionInfo->ContextRecord->EFlags ^= 0x100;	//single step 비트를 해제해서 탈출
+		memset(tmp_buffer, 0, 512);
+		step_count++;
+
+		sprintf(tmp_buffer, "exception addr : %08X\neip : %08X\nexception code : %08X\n ESP : %08X EBP : %08X ECX : %08X EDX : %08X EDI : %08X ESI : %08X\n",
+			ExceptionInfo->ExceptionRecord->ExceptionAddress, ExceptionInfo->ContextRecord->Eip,
+			ExceptionInfo->ExceptionRecord->ExceptionCode, ExceptionInfo->ContextRecord->Esp, ExceptionInfo->ContextRecord->Ebp, ExceptionInfo->ContextRecord->Ecx, ExceptionInfo->ContextRecord->Edx, 
+			ExceptionInfo->ContextRecord->Edi, ExceptionInfo->ContextRecord->Esi);
+
+		ExceptionInfo->ContextRecord->EFlags |= 0x100;
+		ExceptionInfo->ContextRecord->Dr0 = 0;
+		ExceptionInfo->ContextRecord->Dr6 = 0;
+		ExceptionInfo->ContextRecord->Dr7 = 0;
+		ExceptionInfo->ContextRecord->ContextFlags |= CONTEXT_DEBUG_REGISTERS;
+
+		if (MessageBoxA(NULL, tmp_buffer, "escape", MB_OKCANCEL) == IDCANCEL)
+		{
+			ExceptionInfo->ContextRecord->EFlags ^= 0x100;
+			MessageBoxA(NULL, "escape single step", " escape", MB_OK);
+		}
+
+		return EXCEPTION_CONTINUE_EXECUTION;
 	}
-	Sleep(1000);
-	return EXCEPTION_CONTINUE_EXECUTION;
+	else
+		return EXCEPTION_CONTINUE_SEARCH;
+	
 }
 
 BOOL insert_veh_win10()
@@ -194,6 +204,12 @@ BOOL insert_veh_win10()
 		pop edi
 		pop ecx
 		pop edx
+	}
+
+	if (first_handler_buffer == (convert_handler_list + 4) && second_handler_buffer == (convert_handler_list + 4))
+	{
+		AddVectoredExceptionHandler(1, first_veh);
+		return TRUE;
 	}
 
 	//내 핸들러 heap 설정
@@ -366,6 +382,13 @@ BOOL insert_veh_win7()
 		pop ecx
 		pop edx
 	}
+
+	if (first_handler_buffer == (convert_handler_list + 4) && second_handler_buffer == (convert_handler_list + 4))
+	{
+		AddVectoredExceptionHandler(1, first_veh);
+		return TRUE;
+	}
+
 	__asm {
 		push edx
 		push ecx

@@ -6,6 +6,7 @@
 typedef struct READABLE_MEMORY {
 	uint32_t start_addr;
 	uint32_t addr_size;
+	uint32_t protect;
 }READABLE_MEMORY_LIST, *PREADABLE_MEMORY_LIST;
 
 void set_thread_context();

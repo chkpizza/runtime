@@ -1,9 +1,9 @@
 ﻿  veh_dll.c
-veh_dll.c(46): warning C4477: 'printf' : 서식 문자열 '%08X'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'PVOID'입니다.
+veh_dll.c(52): warning C4477: 'sprintf' : 서식 문자열 '%08X'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'PVOID'입니다.
   코드를 생성하고 있습니다.
-  0 of 7 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  0 of 8 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
   veh_dll.vcxproj -> D:\runtime\veh_dll\Release\veh_dll.dll
   veh_dll.vcxproj -> D:\runtime\veh_dll\Release\veh_dll.pdb (Full PDB)

@@ -17,7 +17,7 @@ uint32_t get_pid()
 
 	Process32First(snapshot_handle, &process_entry);
 	do {
-		if (!wcscmp(process_entry.szExeFile, L"testconsole.exe"))
+		if (!wcscmp(process_entry.szExeFile, L"uTorrent.exe"))
 		{
 			printf("%ls : %d\n", process_entry.szExeFile, process_entry.th32ProcessID);
 			target_pid = process_entry.th32ProcessID;
@@ -102,6 +102,7 @@ void get_readable_memory_list(uint32_t image_base, uint32_t image_size, HANDLE t
 				{
 					memory_list[loop_count].start_addr = (uint32_t)mbi.BaseAddress;
 					memory_list[loop_count].addr_size = (uint32_t)mbi.RegionSize;
+					memory_list[loop_count].protect = (uint32_t)mbi.Protect;
 					printf("[%d] %08X --- %08X\n", loop_count, memory_list[loop_count].start_addr,
 						memory_list[loop_count].addr_size);
 					loop_count++;
@@ -158,15 +159,16 @@ void set_thread_context()
 
 			dr6_backup = thread_context.Dr6;
 			dr7_backup = thread_context.Dr7;
+			thread_context.EFlags |= 0x100;
 			thread_context.ContextFlags = CONTEXT_DEBUG_REGISTERS;
-			thread_context.Dr0 = (DWORD)0x013C10E0;
-
+			thread_context.Dr0 = (DWORD)0x76BEA2D5;
 			thread_context.Dr7 = (1 << 0) | (1 << 2) | (1 << 4) | (1 << 6);
-			
+
 			if (!SetThreadContext(thread_handle, &thread_context))
 			{
 				printf("set_thread_context():: SetThreadContext fail : %08X\n", GetLastError());
 			}
+
 			break;
 		}
 	} while (Thread32Next(snapshot_handle, &thread_entry));

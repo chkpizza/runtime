@@ -22,7 +22,7 @@ int main()
 	test_func_addr = (DWORD)test_func;
 	printf("test_func_addr : %08X\n", test_func);
 
-	AddVectoredExceptionHandler(1, FirstHandler);
+	//AddVectoredExceptionHandler(1, FirstHandler);
 	system("pause");
 	while (1)
 	{
