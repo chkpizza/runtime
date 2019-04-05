@@ -11,7 +11,7 @@
 
 BOOL read_target_process_memory();
 BOOL get_target_process_info(uint32_t* image_base, uint32_t* image_size);
-BOOL disasm(unsigned char* memory, uint32_t memory_addr, uint32_t size);
+BOOL disasm(PBYTE memory, uint32_t memory_addr, uint32_t size);
 
 uint32_t image_base;
 uint32_t image_size;

@@ -25,17 +25,8 @@ BOOL read_target_process_memory()
 	}
 
 	get_readable_memory_list(target_image_base, target_image_size, target_process_handle);
-	/*
-	for (loop_count = 0; loop_count < readable_memory_count; loop_count++)
-	{
-		target_memory_hex = (PBYTE)malloc(memory_list[loop_count].addr_size);
-		memset(target_memory_hex, 0, memory_list[loop_count].addr_size);
-		ReadProcessMemory(target_process_handle, (LPVOID)memory_list[loop_count].start_addr, target_memory_hex, memory_list[loop_count].addr_size, &read_size);
-		disasm(target_memory_hex, memory_list[loop_count].start_addr, memory_list[loop_count].addr_size);
-		free(target_memory_hex);
-	}
-	*/
 	loop_count = 0;
+
 	while (loop_count < readable_memory_count)
 	{
 		if (memory_list[loop_count].protect == PAGE_EXECUTE_READ || memory_list[loop_count].protect == PAGE_EXECUTE_READWRITE ||

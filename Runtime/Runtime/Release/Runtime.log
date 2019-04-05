@@ -1,7 +1,12 @@
-﻿  disassemble.c
+﻿  dr_debugger.c
+dr_debugger.c(210): warning C4101: 'module_addr' :참조되지 않은 지역 변수입니다.
+dr_debugger.c(213): warning C4101: 'optional_header' :참조되지 않은 지역 변수입니다.
+dr_debugger.c(212): warning C4101: 'nt_header' :참조되지 않은 지역 변수입니다.
+dr_debugger.c(209): warning C4101: 'api_addr' :참조되지 않은 지역 변수입니다.
+dr_debugger.c(211): warning C4101: 'dos_header' :참조되지 않은 지역 변수입니다.
 LINK : warning LNK4098: 'LIBCMT' defaultlib가 다른 라이브러리와 충돌합니다. /NODEFAULTLIB:library를 사용하십시오.
   코드를 생성하고 있습니다.
-  7 of 1465 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
+  3 of 1466 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     1 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
