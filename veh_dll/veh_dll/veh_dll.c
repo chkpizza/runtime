@@ -197,7 +197,6 @@ BOOL insert_veh_win10()
 
 	memcpy(cookie, (byte*)calc_call + 0x60, 4);
 
-	//encode cookie get	0x7741C46C
 	tmp_convert_var = (DWORD)cookie[3];
 	tmp_convert_var = tmp_convert_var << 24;
 	cookie_value = tmp_convert_var;
@@ -288,7 +287,7 @@ BOOL insert_veh_win10()
 		mov edi, dword ptr [ebx]
 		xor ecx, ecx
 		mov eax, 1
-		lock cmpxchg [edi], ecx	//해당 커멘드의 사용법을 정확히 몰라서 메모리 값이 1로 고정되어있어서 정상 동작하지 않았음
+		lock cmpxchg [edi], ecx	
 
 		push 1
 		call _LdrProtectMrdata
