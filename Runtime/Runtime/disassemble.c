@@ -1,4 +1,5 @@
 #include "disassemble.h"
+#include "dr_debugger.h"
 
 #pragma warning(disable:4996)
 
@@ -10,14 +11,15 @@ BOOL read_target_process_memory()
 	uint32_t loop_count;
 	uint32_t read_size;
 	PBYTE target_memory_hex;
+	
 
-	get_pid();
-	target_process_handle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, target_pid);
-	if (target_process_handle == INVALID_HANDLE_VALUE)
+	target_process_handle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, get_pid());
+	if (target_process_handle == NULL)
 	{
 		printf("read_target_process_memory:: OpenProcess fail : %08X\n", GetLastError());
 		return FALSE;
 	}
+
 
 	if (get_target_process_info(&target_image_base, &target_image_size))
 	{
@@ -40,6 +42,57 @@ BOOL read_target_process_memory()
 		}
 		loop_count++;
 	}
+
+
+	return TRUE;
+}
+
+BOOL get_target_process_info(uint32_t* image_base, uint32_t* image_size)
+{
+	MODULEENTRY32 module_entry;
+	HANDLE snapshot_handle;
+	uint32_t loop_cnt = 0;
+
+	module_entry.dwSize = sizeof(MODULEENTRY32);
+	snapshot_handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, get_pid());
+	if (snapshot_handle == INVALID_HANDLE_VALUE)
+	{
+		printf("get_target_process_info:: CreateToolhelp32Snapshot fail : %08X\n", GetLastError());
+		return FALSE;
+	}
+
+	if (Module32First(snapshot_handle, &module_entry))
+	{
+		*image_base = (uint32_t)module_entry.modBaseAddr;
+		*image_size = (uint32_t)module_entry.modBaseSize;
+	}
+	module_cnt++;
+
+	do {
+		module_cnt++;
+	} while (Module32Next(snapshot_handle, &module_entry));
+
+	module_list = (PMODULE_LIST)malloc(sizeof(MODULE_LIST) * module_cnt);
+	Module32First(snapshot_handle, &module_entry);
+	module_list[loop_cnt].image_base = (uint32_t)module_entry.modBaseAddr;
+	module_list[loop_cnt].image_size = (uint32_t)module_entry.modBaseSize;
+	wcscpy_s(module_list[loop_cnt].module_name, MODULE_MAX_SIZE, module_entry.szModule);
+	loop_cnt++;
+
+	do {
+		module_list[loop_cnt].image_base = (uint32_t)module_entry.modBaseAddr;
+		module_list[loop_cnt].image_size = (uint32_t)module_entry.modBaseSize;
+		wcscpy_s(module_list[loop_cnt].module_name, MODULE_MAX_SIZE, module_entry.szModule);
+		loop_cnt++;
+	} while (Module32Next(snapshot_handle, &module_entry));
+
+
+	for (loop_cnt = 0; loop_cnt < module_cnt; loop_cnt++)
+	{
+		printf("[%d] %08X - %08X : %ws\n", loop_cnt + 1, module_list[loop_cnt].image_base, (module_list[loop_cnt].image_base + module_list[loop_cnt].image_size), module_list[loop_cnt].module_name);
+	}
+	CloseHandle(snapshot_handle);
+
 	return TRUE;
 }
 
@@ -64,16 +117,15 @@ BOOL disasm(PBYTE memory, uint32_t memory_addr, uint32_t size)
 	{
 		for (cmd_count = 0; cmd_count < count; cmd_count++)
 		{
-			/*
+			
 			if (!(cmd_count % 100))
 			{
 				system("pause");
-				system("cls");
+				break;	//юс╫ц break
 			}
 			printf("[%d] %08X: %s %s\n", insn[cmd_count].size, (uint32_t)insn[cmd_count].address, insn[cmd_count].mnemonic, insn[cmd_count].op_str);
-			*/
+			
 		}
 	}
-
 	return TRUE;
 }

@@ -13,15 +13,33 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Engine">
+      <UniqueIdentifier>{3d51039c-c59e-4b13-955f-487977a902ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\extension">
+      <UniqueIdentifier>{48bcb30b-b80e-4e7d-a7f4-023ae0b04e87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="veh_dll.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="engine.c">
+      <Filter>소스 파일\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="extension_binder.c">
+      <Filter>소스 파일\extension</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="veh_debugger.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="engine.h">
+      <Filter>소스 파일\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="extension_binder.h">
+      <Filter>소스 파일\extension</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

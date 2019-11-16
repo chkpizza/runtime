@@ -1,11 +1,17 @@
 #include "dr_debugger.h"
-#include <TlHelp32.h>
+
+void inject_vehdbg_library()
+{
+	uint32_t target_pid = 0;
+	target_pid = get_pid();
+	
+}
 
 uint32_t get_pid()
 {
 	HANDLE snapshot_handle;
 	PROCESSENTRY32 process_entry;
-
+	UINT process_cnt = 1;
 
 	process_entry.dwSize = sizeof(PROCESSENTRY32);
 	snapshot_handle = CreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
@@ -17,68 +23,25 @@ uint32_t get_pid()
 
 	Process32First(snapshot_handle, &process_entry);
 	do {
+		printf("[%d]. %ws\n", process_entry.th32ProcessID , process_entry.szExeFile);
+		process_cnt++;
+	} while (Process32Next(snapshot_handle, &process_entry));
+
+	system("pause");
+
+	Process32First(snapshot_handle, &process_entry);
+	do {
 		if (!wcscmp(process_entry.szExeFile, L"uTorrent.exe"))
 		{
-			printf("%ls : %d\n", process_entry.szExeFile, process_entry.th32ProcessID);
-			target_pid = process_entry.th32ProcessID;
+			//printf("%ls : %d\n", process_entry.szExeFile, process_entry.th32ProcessID);
 			CloseHandle(snapshot_handle);
-			return target_pid;
+			return process_entry.th32ProcessID;
 		}
 	} while (Process32Next(snapshot_handle, &process_entry));
 
 	CloseHandle(snapshot_handle);
 	return 0;
 }
-
-BOOL get_target_process_info(uint32_t* image_base, uint32_t* image_size)
-{
-	MODULEENTRY32 module_entry;
-	HANDLE snapshot_handle;
-	uint32_t loop_cnt = 0;
-
-	module_entry.dwSize = sizeof(MODULEENTRY32);
-	snapshot_handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, target_pid);
-	if (snapshot_handle == INVALID_HANDLE_VALUE)
-	{
-		printf("get_target_process_info:: CreateToolhelp32Snapshot fail : %08X\n", GetLastError());
-		return FALSE;
-	}
-
-	if (Module32First(snapshot_handle, &module_entry))
-	{
-		*image_base = (uint32_t)module_entry.modBaseAddr;
-		*image_size = (uint32_t)module_entry.modBaseSize;
-	}
-	module_cnt++;
-
-	do {
-		module_cnt++;
-	} while (Module32Next(snapshot_handle, &module_entry));
-
-	module_list = (PMODULE_LIST)malloc(sizeof(MODULE_LIST) * module_cnt);
-	Module32First(snapshot_handle, &module_entry);
-	module_list[loop_cnt].image_base = (uint32_t)module_entry.modBaseAddr;
-	module_list[loop_cnt].image_size = (uint32_t)module_entry.modBaseSize;
-	wcscpy_s(module_list[loop_cnt].module_name, MODULE_MAX_SIZE, module_entry.szModule);
-	loop_cnt++;
-
-	do {
-		module_list[loop_cnt].image_base = (uint32_t)module_entry.modBaseAddr;
-		module_list[loop_cnt].image_size = (uint32_t)module_entry.modBaseSize;
-		wcscpy_s(module_list[loop_cnt].module_name, MODULE_MAX_SIZE, module_entry.szModule);
-		loop_cnt++;
-	} while (Module32Next(snapshot_handle, &module_entry));
-
-
-	for (loop_cnt = 0; loop_cnt < module_cnt; loop_cnt++)
-	{
-		printf("[%d] %08X - %08X : %ws\n", loop_cnt + 1, module_list[loop_cnt].image_base, (module_list[loop_cnt].image_base + module_list[loop_cnt].image_size), module_list[loop_cnt].module_name);
-	}
-
-	CloseHandle(snapshot_handle);
-	return TRUE;
-}
-
 
 void get_readable_memory_list(uint32_t image_base, uint32_t image_size, HANDLE target_process_handle)
 {
@@ -103,6 +66,9 @@ void get_readable_memory_list(uint32_t image_base, uint32_t image_size, HANDLE t
 					readable_memory_count++;
 				}
 			}
+		}
+		else {
+			printf("222\n");
 		}
 		start_addr += mbi.RegionSize;
 	}
@@ -134,8 +100,6 @@ void get_readable_memory_list(uint32_t image_base, uint32_t image_size, HANDLE t
 	}
 }
 
-
-
 void set_thread_context()
 {
 	uint32_t debug_pid = 0;
@@ -144,7 +108,6 @@ void set_thread_context()
 	HANDLE thread_handle = NULL;
 	THREADENTRY32 thread_entry;
 	uint32_t index = 0;
-	uint32_t bp_addr = 0;
 	DWORD dr6_backup = 0;
 	DWORD dr7_backup = 0;
 
@@ -180,48 +143,27 @@ void set_thread_context()
 				CloseHandle(snapshot_handle);
 				break;
 			}
-			
-			bp_addr = search_target_api(L"COMDLG32.dll","GetOpenFileNameW");
+
+			SuspendThread(thread_handle);
 
 			dr6_backup = thread_context.Dr6;
 			dr7_backup = thread_context.Dr7;
 			thread_context.EFlags |= 0x100;
 			thread_context.ContextFlags = CONTEXT_DEBUG_REGISTERS;
-			thread_context.Dr0 = (DWORD)0x7675A2D5;
+			thread_context.Dr0 = (DWORD)0x750C5EE0;	
 			thread_context.Dr7 = (1 << 0) | (1 << 2) | (1 << 4) | (1 << 6);
 
 			if (!SetThreadContext(thread_handle, &thread_context))
 			{
 				printf("set_thread_context():: SetThreadContext fail : %08X\n", GetLastError());
 			}
+			ResumeThread(thread_handle);
 			break;
 		}
 	} while (Thread32Next(snapshot_handle, &thread_entry));
 
+
 	system("pause");
 	CloseHandle(snapshot_handle);
 	CloseHandle(thread_handle);
-}
-
-uint32_t search_target_api(wchar_t* module_name, char* api_name)
-{
-	uint32_t loop_cnt = 0;
-	uint32_t api_addr;
-	uint32_t module_addr;
-	IMAGE_DOS_HEADER* dos_header;
-	PIMAGE_NT_HEADERS nt_header;
-	PIMAGE_OPTIONAL_HEADER optional_header;
-
-	for (loop_cnt = 0; loop_cnt < module_cnt; loop_cnt++)
-	{
-		if (!wcscmp(module_list[loop_cnt].module_name, module_name))
-		{
-			printf("find [%d] %08X - %08X : %ws\n", loop_cnt, module_list[loop_cnt].image_base,
-				module_list[loop_cnt].image_base + module_list[loop_cnt].image_size, module_list[loop_cnt].module_name);
-			break;
-		}
-	}
-
-	//system("pause");
-	return 0;
 }
