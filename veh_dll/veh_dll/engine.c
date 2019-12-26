@@ -234,6 +234,8 @@ DWORD convert_endian(byte* original)
 	return convert_result;
 }
 
+
+
 BOOL disasm(UINT memory_addr, DWORD* next_line)
 {
 
@@ -287,6 +289,48 @@ BOOL disasm(UINT memory_addr, DWORD* next_line)
 	}
 
 	return TRUE;
+}
+
+void init()
+{
+	mapping_handle = OpenFileMappingA
+	(
+		FILE_MAP_READ | FILE_MAP_WRITE,
+		FALSE,
+		OBJECT_NAME
+	);
+
+	shared_memory = (char*)MapViewOfFile
+	(
+		mapping_handle,
+		PAGE_READONLY,
+		0,
+		0,
+		0
+	);
+}
+void sender()
+{
+	strcpy(shared_memory, tmp_buffer);
+	receiver();
+}
+void receiver()
+{
+	while (1)
+	{
+		if (!strcmp(shared_memory, "step_over"))
+		{
+			trace_command = 1;
+			break;
+		}
+		else if (!strcmp(shared_memory, "step_rewind"))
+		{
+			trace_command = 2;
+			break;
+		}
+
+		Sleep(1000);
+	}
 }
 
 /*

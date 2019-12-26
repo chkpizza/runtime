@@ -31,7 +31,7 @@ uint32_t get_pid()
 
 	Process32First(snapshot_handle, &process_entry);
 	do {
-		if (!wcscmp(process_entry.szExeFile, L"uTorrent.exe"))
+		if (!wcscmp(process_entry.szExeFile, L"ALKeeper.exe"))
 		{
 			//printf("%ls : %d\n", process_entry.szExeFile, process_entry.th32ProcessID);
 			CloseHandle(snapshot_handle);
@@ -63,6 +63,7 @@ void get_readable_memory_list(uint32_t image_base, uint32_t image_size, HANDLE t
 					(mbi.Protect == PAGE_EXECUTE_READWRITE) || (mbi.Protect == PAGE_EXECUTE_WRITECOPY) ||
 					(mbi.Protect == PAGE_READONLY) || (mbi.Protect == PAGE_READWRITE))
 				{
+					printf("readable_memory_list %08X - %08X\n", mbi.BaseAddress, (SIZE_T)mbi.BaseAddress + mbi.RegionSize);
 					readable_memory_count++;
 				}
 			}
@@ -150,7 +151,7 @@ void set_thread_context()
 			dr7_backup = thread_context.Dr7;
 			thread_context.EFlags |= 0x100;
 			thread_context.ContextFlags = CONTEXT_DEBUG_REGISTERS;
-			thread_context.Dr0 = (DWORD)0x750C5EE0;	
+			thread_context.Dr0 = (DWORD)0x56A9E800;
 			thread_context.Dr7 = (1 << 0) | (1 << 2) | (1 << 4) | (1 << 6);
 
 			if (!SetThreadContext(thread_handle, &thread_context))
@@ -158,10 +159,9 @@ void set_thread_context()
 				printf("set_thread_context():: SetThreadContext fail : %08X\n", GetLastError());
 			}
 			ResumeThread(thread_handle);
-			break;
+			//break;	-> 모든 스레드 컨텍스트에 대해 h/w bp를 걸기 위해 break 구문 삭제
 		}
 	} while (Thread32Next(snapshot_handle, &thread_entry));
-
 
 	system("pause");
 	CloseHandle(snapshot_handle);

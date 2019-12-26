@@ -9,6 +9,8 @@
 
 #pragma comment(lib, "netapi32.lib")
 
+#pragma warning (disable:4996)
+
 #ifdef _WIN64
 #pragma comment(lib, "capstone_static_x64.lib")
 
@@ -23,6 +25,8 @@
 #define EXCEPT_FUNCTION_COUNT 1
 #define EXCEPT_RTL_ENTER_CRITICAL_SECTION "RtlEnterCriticalSection"
 #define EXCEPT_RTL_ENTER_CRITICAL_SECTION_DLL "ntdll.dll"
+
+#define OBJECT_NAME "Local\\INTERPE"
 
 typedef struct _MOD_CONTEXT {
 	DWORD ContextFlags;
@@ -66,11 +70,23 @@ BOOL disasm(UINT memory_address, DWORD* next_line);
 BOOL write_log(char* log_text);
 //DWORD get_veh_except_function_address(char* except_function_dll ,char* except_function_name);
 UINT get_veh_except_function_address(DWORD* except_function_array);
+
+void init();
+void sender();
+void receiver();
+
 void step_rewind(MOD_CONTEXT* rewind_context, PCONTEXT current_context);
 void step_run(DWORD break_point_address, PCONTEXT current_context);
 void step_over(PCONTEXT current_context, DWORD current_address);
+
 BOOL heap_pooling(LPVOID pooling_address);
 BOOL finalize();
 
 MOD_CONTEXT context;
 static HANDLE log_file_handle = NULL;
+
+HANDLE mapping_handle;
+char* shared_memory;
+
+char tmp_buffer[512];
+int trace_command;

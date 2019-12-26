@@ -47,6 +47,7 @@ BOOL read_target_process_memory()
 	return TRUE;
 }
 
+
 BOOL get_target_process_info(uint32_t* image_base, uint32_t* image_size)
 {
 	MODULEENTRY32 module_entry;
@@ -91,6 +92,7 @@ BOOL get_target_process_info(uint32_t* image_base, uint32_t* image_size)
 	{
 		printf("[%d] %08X - %08X : %ws\n", loop_cnt + 1, module_list[loop_cnt].image_base, (module_list[loop_cnt].image_base + module_list[loop_cnt].image_size), module_list[loop_cnt].module_name);
 	}
+
 	CloseHandle(snapshot_handle);
 
 	return TRUE;
@@ -123,6 +125,13 @@ BOOL disasm(PBYTE memory, uint32_t memory_addr, uint32_t size)
 				system("pause");
 				break;	//юс╫ц break
 			}
+			
+			/*
+			if ((cmd_count % 100) == 0)
+			{
+				system("pause");
+			}
+			*/
 			printf("[%d] %08X: %s %s\n", insn[cmd_count].size, (uint32_t)insn[cmd_count].address, insn[cmd_count].mnemonic, insn[cmd_count].op_str);
 			
 		}

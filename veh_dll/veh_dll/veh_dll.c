@@ -17,7 +17,7 @@ LONG WINAPI veh_debug_handler(
 	struct _EXCEPTION_POINTERS* ExceptionInfo
 );
 
-char tmp_buffer[512];
+//char tmp_buffer[512];
 int step_count = 0;
 
 BOOL __stdcall DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
@@ -72,6 +72,8 @@ void start()
 			break;
 
 		}
+
+		
 		get_target_process_info(&image_base, &image_size);
 	}
 }
@@ -114,6 +116,20 @@ int check_running_os()
 	VEH Debugger Handler 함수
 
 	모든 디버깅 관련 처리를 해당 함수에서 한다
+
+	#현재 동작방식
+	1. 삽입한 예외 핸들러에 예외가 전달되며 핸들러가 실행됨
+	2. 메시지박스를 실행하며 실행된 메시지박스의 결과값에 따라 디버깅 방법을 결정함
+	
+	현재 동작방식의 문제점 : 사용자화면 프로세스와 엔진 프로세스가 연동되지않음
+
+	#수정후 동작방식
+	1. UI 프로세스에서 엔진 프로세스와 공유하는 공유메모리를 할당 받는다.
+	2. 엔진 라이브러리에서 예외핸들러를 삽입한다.
+	3. 예외핸들러에 예외가 전달되면 스레드를 생성해 사용자화면 프로세스에 예외 발생에 대한 정보를 전달한다.
+	4. UI 프로세스에서 디버깅 방법(스텝 방법)을 결정하면 이에 따른 정보를 공유메모리에 전달한다.
+	5. 엔진 라이브러리는 대기하고 있다가 UI 프로세스에서 전달된 정보를 토대로 트레이싱을 한다.
+	6. 트레이싱이 끝난 후 다음 예외가 전달되면 3~5번을 반복수행한다.
 */
 LONG WINAPI veh_debug_handler(
 	struct _EXCEPTION_POINTERS* ExceptionInfo
@@ -125,6 +141,7 @@ LONG WINAPI veh_debug_handler(
 	BOOL bypass_flag = FALSE;	//step over flag
 	BOOL exit_flag = FALSE;		//single step exit flag
 	DWORD next_line = 0;
+	HANDLE communication_thread_handle;
 
 	int tmp_mb_result = 0;
 
@@ -133,19 +150,21 @@ LONG WINAPI veh_debug_handler(
 		disasm((UINT)ExceptionInfo->ExceptionRecord->ExceptionAddress, &next_line);
 		memset(tmp_buffer, 0, 512);
 		step_count++;
+
 		////////////////////////////////////////////////////////////////////////////////////////
-		sprintf(tmp_buffer, "[EBP %08X] [ESP %08X] [EAX %08X] [ECX %08X] [EDX %08X] [ESI %08X] [EDI %08X] [DR0 %08X]\r\n",
+		sprintf(tmp_buffer, "[EBP %08X] [ESP %08X] [EAX %08X] [EBX %08X] [ECX %08X] [EDX %08X] [ESI %08X] [EDI %08X] [DR0 %08X]\r\n",
 			ExceptionInfo->ContextRecord->Ebp, ExceptionInfo->ContextRecord->Esp, ExceptionInfo->ContextRecord->Eax,
+			ExceptionInfo->ContextRecord->Ebx,
 			ExceptionInfo->ContextRecord->Ecx, ExceptionInfo->ContextRecord->Edx, ExceptionInfo->ContextRecord->Esi,
 			ExceptionInfo->ContextRecord->Edi, ExceptionInfo->ContextRecord->Dr0);
 		write_log(tmp_buffer);
 		memset(tmp_buffer, 0, 512);
 		////////////////////////////////////////////////////////////////////////////////////////
 
-		sprintf(tmp_buffer, "exception addr : %08X\neip : %08X\nexception code : %08X\n ESP : %08X EBP : %08X ECX : %08X EDX : %08X EDI : %08X ESI : %08X EAX: %08X\n",
+		sprintf(tmp_buffer, "exception addr : %08X\neip : %08X\nexception code : %08X\n ESP : %08X EBP : %08X ECX : %08X EDX : %08X EDI : %08X ESI : %08X EAX: %08X EBX : %08X\n",
 			ExceptionInfo->ExceptionRecord->ExceptionAddress, ExceptionInfo->ContextRecord->Eip,
 			ExceptionInfo->ExceptionRecord->ExceptionCode, ExceptionInfo->ContextRecord->Esp, ExceptionInfo->ContextRecord->Ebp, ExceptionInfo->ContextRecord->Ecx, ExceptionInfo->ContextRecord->Edx,
-			ExceptionInfo->ContextRecord->Edi, ExceptionInfo->ContextRecord->Esi, ExceptionInfo->ContextRecord->Eax);
+			ExceptionInfo->ContextRecord->Edi, ExceptionInfo->ContextRecord->Esi, ExceptionInfo->ContextRecord->Eax, ExceptionInfo->ContextRecord->Ebx);
 
 		ExceptionInfo->ContextRecord->EFlags |= 0x100;
 		ExceptionInfo->ContextRecord->Dr0 = 0;
@@ -155,7 +174,20 @@ LONG WINAPI veh_debug_handler(
 		ExceptionInfo->ContextRecord->Dr6 = 0;
 		ExceptionInfo->ContextRecord->Dr7 = (1 << 0) | (1 << 2) | (1 << 4) | (1 << 6);
 		ExceptionInfo->ContextRecord->ContextFlags |= CONTEXT_DEBUG_REGISTERS;
-		
+
+		init();
+		sender();
+
+		if (trace_command == 1)
+		{
+			step_over(ExceptionInfo->ContextRecord, next_line);
+		}
+		else if (trace_command == 2)
+		{
+			step_rewind(&context, ExceptionInfo->ContextRecord);
+		}
+
+		/*
 		tmp_mb_result = MessageBoxA(NULL, tmp_buffer, "[OK => break]", MB_YESNOCANCEL);
 
 		if(tmp_mb_result == IDNO)
@@ -172,10 +204,11 @@ LONG WINAPI veh_debug_handler(
 				step_over(ExceptionInfo->ContextRecord, next_line);
 			}
 		}
-
+		*/
 		/*
 			step_rewind를 위해 현재 Context를 저장
 		*/
+
 		context.ContextFlags = ExceptionInfo->ContextRecord->ContextFlags;
 		context.Dr0 = (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress;
 		context.Dr1 = ExceptionInfo->ContextRecord->Dr1;
@@ -283,7 +316,7 @@ void target_process_pe_parser()
 	WORD ordinal_number;
 
 	char name_buffer[FUNCTION_MAX_SIZE];
-
+	
 	//	Test Log
 	char buffer[512];
 	HANDLE test_log_file;
@@ -357,10 +390,15 @@ BOOL read_function_name(LPBYTE name_table_address, char* name_buffer)
 		return FALSE;
 	}
 	//issue 001 
+	/*
+	   #EastSoft Library crash 
+	   #
+	*/
 	if (strlen(name_table_address) > 256)
 	{
 		return FALSE;
 	}
+	
 	name_buffer[name_length] = name_table_address[name_length];
 	name_length++;
 
