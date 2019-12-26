@@ -1,3 +1,11 @@
+Information
+-------
+Insert my veh handler as the top handler for debugging.
+
+Provides basic debugger functionality
+
+Provides a rewind function that returns you to the previous command when you accidentally execute the step into function.
+
 Dependencies
 -------
 * [xdvre](https://github.com/xdvre/xdvre)
