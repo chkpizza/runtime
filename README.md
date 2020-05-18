@@ -6,6 +6,8 @@ Provides basic debugger functionality
 
 Provides a rewind function that returns you to the previous command when you accidentally execute the step into function.
 
+![test](https://user-images.githubusercontent.com/48915641/82208936-6685e480-9947-11ea-8bf5-2d548afa9b57.gif)
+
 Dependencies
 -------
 * [xdvre](https://github.com/xdvre/xdvre)
